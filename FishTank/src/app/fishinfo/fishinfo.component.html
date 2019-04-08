@@ -1,0 +1,20 @@
+<div class="informationOverlay center-screen">
+
+  <div class="informationTextArea center-screen">
+
+    <div class="right-corner" (click)="closeOverlay()">
+      X
+    </div>
+
+
+    {{fish.sound}}
+    <div>{{fish.likes}}</div>
+    <br />
+    {{fish.summary}}
+
+    <div [hidden]="alreadyLiked">
+      <br />
+      <img src="https://media.discordapp.net/attachments/562973773284769794/563339815886651393/Facebook_like_thumb.png" width="50px" (click)="increaseLikes()" />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+body {
+  background-color: transparent;
+}
+
+h1 {
+  color: #0066A1;
+}
+
+html {
+  background: url(https://media.discordapp.net/attachments/562973773284769794/562973853551427615/Aquarium_dark_empty.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.center-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+  max-height: 100vh;
+}

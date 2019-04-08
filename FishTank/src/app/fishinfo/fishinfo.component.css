@@ -1,0 +1,26 @@
+.informationOverlay {
+  background-color: transparent;
+  opacity: 0.9;
+  color: black;
+  padding: 10%;
+}
+
+.informationTextArea {
+  background-color: lightgray;
+  padding: 10%;
+  width: 100%;
+}
+
+.previewPage {
+  width: 50%;
+  min-width: 200px;
+  height: 40vh;
+}
+
+.right-corner {
+  background-color: coral;
+  width: 42px;
+  height: 42px;
+  font-family: Impact;
+  font-size: xx-large;
+}

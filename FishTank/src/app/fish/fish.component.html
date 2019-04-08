@@ -1,0 +1,8 @@
+<div class="tank center-screen">
+  <div *ngFor="let fish of fishes">
+    <span routerLink="/fishinfo/{{fish.id}}" name="fish">
+    <img src={{getImage(fish.id)}} width="80px">
+    </span>
+  </div>
+</div>
+

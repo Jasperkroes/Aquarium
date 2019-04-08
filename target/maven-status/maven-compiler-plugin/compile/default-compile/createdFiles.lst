@@ -1,0 +1,4 @@
+com\fishtank\controllers\FishController.class
+com\fishtank\FishTankApplication.class
+com\fishtank\model\Fish.class
+com\fishtank\services\FishService.class
