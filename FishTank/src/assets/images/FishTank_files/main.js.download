@@ -1,0 +1,591 @@
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["main"],{
+
+/***/ "./node_modules/webpack/hot sync ^\\.\\/log$":
+/*!*************************************************!*\
+  !*** (webpack)/hot sync nonrecursive ^\.\/log$ ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./log": "./node_modules/webpack/hot/log.js"
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) { // check for number or string
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return id;
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "./node_modules/webpack/hot sync ^\\.\\/log$";
+
+/***/ }),
+
+/***/ "./src/$$_lazy_route_resource lazy recursive":
+/*!**********************************************************!*\
+  !*** ./src/$$_lazy_route_resource lazy namespace object ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function webpackEmptyAsyncContext(req) {
+	// Here Promise.resolve().then() is used instead of new Promise() to prevent
+	// uncaught exception popping up in devtools
+	return Promise.resolve().then(function() {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	});
+}
+webpackEmptyAsyncContext.keys = function() { return []; };
+webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
+module.exports = webpackEmptyAsyncContext;
+webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
+
+/***/ }),
+
+/***/ "./src/app/Fish.ts":
+/*!*************************!*\
+  !*** ./src/app/Fish.ts ***!
+  \*************************/
+/*! exports provided: Fish */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Fish", function() { return Fish; });
+var Fish = /** @class */ (function () {
+    function Fish(sound, linkToIdea, summary) {
+        this.id = 0;
+        this.sound = sound;
+        this.likes = 0;
+        this.ideaLink = linkToIdea;
+        this.age = 0;
+        this.birthday = new Date();
+        this.summary = summary;
+    }
+    return Fish;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/animated-fish/animated-fish.component.css":
+/*!***********************************************************!*\
+  !*** ./src/app/animated-fish/animated-fish.component.css ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FuaW1hdGVkLWZpc2gvYW5pbWF0ZWQtZmlzaC5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/animated-fish/animated-fish.component.html":
+/*!************************************************************!*\
+  !*** ./src/app/animated-fish/animated-fish.component.html ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div id=\"content\"></div>\r\n"
+
+/***/ }),
+
+/***/ "./src/app/animated-fish/animated-fish.component.ts":
+/*!**********************************************************!*\
+  !*** ./src/app/animated-fish/animated-fish.component.ts ***!
+  \**********************************************************/
+/*! exports provided: AnimatedFishComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AnimatedFishComponent", function() { return AnimatedFishComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+
+
+
+var AnimatedFishComponent = /** @class */ (function () {
+    function AnimatedFishComponent() {
+        this.renderer = new three__WEBPACK_IMPORTED_MODULE_2__["WebGLRenderer"]({ alpha: true });
+        this.renderer.setSize(100, 100);
+        this.renderer.setClearColor(0xFF0000, 1);
+    }
+    AnimatedFishComponent.prototype.start = function () {
+        this.renderer.clear();
+    };
+    AnimatedFishComponent.prototype.ngOnInit = function () {
+        document.getElementById('content').appendChild(this.renderer.domElement);
+    };
+    AnimatedFishComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-animated-fish',
+            template: __webpack_require__(/*! ./animated-fish.component.html */ "./src/app/animated-fish/animated-fish.component.html"),
+            styles: [__webpack_require__(/*! ./animated-fish.component.css */ "./src/app/animated-fish/animated-fish.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    ], AnimatedFishComponent);
+    return AnimatedFishComponent;
+}());
+
+window.onload = function () {
+    var animatedFish = new AnimatedFishComponent();
+    animatedFish.start();
+};
+
+
+/***/ }),
+
+/***/ "./src/app/app-routing.module.ts":
+/*!***************************************!*\
+  !*** ./src/app/app-routing.module.ts ***!
+  \***************************************/
+/*! exports provided: AppRoutingModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppRoutingModule", function() { return AppRoutingModule; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _fish_fish_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fish/fish.component */ "./src/app/fish/fish.component.ts");
+/* harmony import */ var _fishinfo_fishinfo_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./fishinfo/fishinfo.component */ "./src/app/fishinfo/fishinfo.component.ts");
+
+
+
+
+
+var routes = [
+    { path: '', component: _fish_fish_component__WEBPACK_IMPORTED_MODULE_3__["FishComponent"] },
+    { path: 'fishinfo/:id', component: _fishinfo_fishinfo_component__WEBPACK_IMPORTED_MODULE_4__["FishinfoComponent"] }
+];
+var AppRoutingModule = /** @class */ (function () {
+    function AppRoutingModule() {
+    }
+    AppRoutingModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+            imports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(routes)],
+            exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]]
+        })
+    ], AppRoutingModule);
+    return AppRoutingModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/app.component.css":
+/*!***********************************!*\
+  !*** ./src/app/app.component.css ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2FwcC5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/app.component.html":
+/*!************************************!*\
+  !*** ./src/app/app.component.html ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\r\n<router-outlet></router-outlet>\r\n"
+
+/***/ }),
+
+/***/ "./src/app/app.component.ts":
+/*!**********************************!*\
+  !*** ./src/app/app.component.ts ***!
+  \**********************************/
+/*! exports provided: AppComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+var AppComponent = /** @class */ (function () {
+    function AppComponent() {
+        this.title = 'FishTank';
+    }
+    AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-root',
+            template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html"),
+            styles: [__webpack_require__(/*! ./app.component.css */ "./src/app/app.component.css")]
+        })
+    ], AppComponent);
+    return AppComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/app.module.ts":
+/*!*******************************!*\
+  !*** ./src/app/app.module.ts ***!
+  \*******************************/
+/*! exports provided: AppModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppModule", function() { return AppModule; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var ng_click_outside__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ng-click-outside */ "./node_modules/ng-click-outside/lib/index.js");
+/* harmony import */ var ng_click_outside__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(ng_click_outside__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+/* harmony import */ var _fish_fish_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./fish/fish.component */ "./src/app/fish/fish.component.ts");
+/* harmony import */ var _fishinfo_fishinfo_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./fishinfo/fishinfo.component */ "./src/app/fishinfo/fishinfo.component.ts");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var _animated_fish_animated_fish_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./animated-fish/animated-fish.component */ "./src/app/animated-fish/animated-fish.component.ts");
+
+
+
+
+
+
+
+
+
+
+var AppModule = /** @class */ (function () {
+    function AppModule() {
+    }
+    AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
+            declarations: [
+                _app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"],
+                _fish_fish_component__WEBPACK_IMPORTED_MODULE_6__["FishComponent"],
+                _fishinfo_fishinfo_component__WEBPACK_IMPORTED_MODULE_7__["FishinfoComponent"],
+                _animated_fish_animated_fish_component__WEBPACK_IMPORTED_MODULE_9__["AnimatedFishComponent"]
+            ],
+            imports: [
+                _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
+                _app_routing_module__WEBPACK_IMPORTED_MODULE_4__["AppRoutingModule"],
+                _angular_common_http__WEBPACK_IMPORTED_MODULE_8__["HttpClientModule"],
+                ng_click_outside__WEBPACK_IMPORTED_MODULE_3__["ClickOutsideModule"]
+            ],
+            providers: [],
+            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_5__["AppComponent"]]
+        })
+    ], AppModule);
+    return AppModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/fish-service.service.ts":
+/*!*****************************************!*\
+  !*** ./src/app/fish-service.service.ts ***!
+  \*****************************************/
+/*! exports provided: FishServiceService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FishServiceService", function() { return FishServiceService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+
+
+
+
+
+var FishServiceService = /** @class */ (function () {
+    function FishServiceService(http) {
+        this.http = http;
+    }
+    FishServiceService.prototype.handleError = function (operation, result) {
+        if (operation === void 0) { operation = 'operation'; }
+        return function (error) {
+            console.error(error);
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["of"])(result);
+        };
+    };
+    FishServiceService.prototype.getAllFishes = function () {
+        return this.http.get('http://localhost:8080/fish').pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(this.handleError("getAllFishes")));
+    };
+    FishServiceService.prototype.getFishById = function (id) {
+        return this.http.get('http://localhost:8080/fish/' + id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["catchError"])(this.handleError("getFishByid")));
+    };
+    FishServiceService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HttpClient"]])
+    ], FishServiceService);
+    return FishServiceService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/fish/fish.component.css":
+/*!*****************************************!*\
+  !*** ./src/app/fish/fish.component.css ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".tank {\r\n  color: azure;\r\n  text-align: center;\r\n  max-height: 100%;\r\n  max-width: 100%;\r\n}\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZmlzaC9maXNoLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxZQUFZO0VBQ1osa0JBQWtCO0VBQ2xCLGdCQUFnQjtFQUNoQixlQUFlO0FBQ2pCIiwiZmlsZSI6InNyYy9hcHAvZmlzaC9maXNoLmNvbXBvbmVudC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIudGFuayB7XHJcbiAgY29sb3I6IGF6dXJlO1xyXG4gIHRleHQtYWxpZ246IGNlbnRlcjtcclxuICBtYXgtaGVpZ2h0OiAxMDAlO1xyXG4gIG1heC13aWR0aDogMTAwJTtcclxufVxyXG4iXX0= */"
+
+/***/ }),
+
+/***/ "./src/app/fish/fish.component.html":
+/*!******************************************!*\
+  !*** ./src/app/fish/fish.component.html ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<app-animated-fish></app-animated-fish>\r\n<div class=\"tank center-screen\">\r\n  <div *ngFor=\"let fish of fishes\">\r\n    <span routerLink=\"/fishinfo/{{fish.id}}\" name=\"fish\">\r\n      <img src={{getImage(fish.id)}} width=\"70px\">\r\n    </span>\r\n  </div>\r\n</div>\r\n\r\n"
+
+/***/ }),
+
+/***/ "./src/app/fish/fish.component.ts":
+/*!****************************************!*\
+  !*** ./src/app/fish/fish.component.ts ***!
+  \****************************************/
+/*! exports provided: FishComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FishComponent", function() { return FishComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _fish_service_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../fish-service.service */ "./src/app/fish-service.service.ts");
+
+
+
+
+var FishComponent = /** @class */ (function () {
+    function FishComponent(router, fishService) {
+        this.router = router;
+        this.fishService = fishService;
+    }
+    FishComponent.prototype.ngOnInit = function () {
+        this.getAllFishes();
+    };
+    FishComponent.prototype.getAllFishes = function () {
+        var _this = this;
+        this.fishService.getAllFishes().subscribe(function (result) {
+            _this.fishes = result;
+        });
+    };
+    FishComponent.prototype.showFishPage = function (id) {
+        this.router.navigateByUrl("/fishinfo/" + id);
+    };
+    FishComponent.prototype.getImage = function (id) {
+        if (id % 3 == 0) {
+            return "http://greaterclevelandaquarium.com/wp-content/uploads/2018/07/Sailfin-Tang_outline-1.png";
+        }
+        else if (id % 3 == 1) {
+            return "https://i.pinimg.com/originals/9a/1a/16/9a1a1601fd0852fc6ea1881f24621a92.png";
+        }
+        else {
+            return "https://pics.clipartpng.com/Clown_fish_PNG_Clipart-430.png";
+        }
+    };
+    FishComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-fish',
+            template: __webpack_require__(/*! ./fish.component.html */ "./src/app/fish/fish.component.html"),
+            styles: [__webpack_require__(/*! ./fish.component.css */ "./src/app/fish/fish.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _fish_service_service__WEBPACK_IMPORTED_MODULE_3__["FishServiceService"]])
+    ], FishComponent);
+    return FishComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/fishinfo/fishinfo.component.css":
+/*!*************************************************!*\
+  !*** ./src/app/fishinfo/fishinfo.component.css ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".informationOverlay {\r\n  background-color: transparent;\r\n  opacity: 0.9;\r\n  color: black;\r\n  padding: 10%;\r\n}\r\n\r\n.informationTextArea {\r\n  background-color: lightgray;\r\n  padding: 10%;\r\n  width: 100%;\r\n}\r\n\r\n.previewPage {\r\n  width: 50%;\r\n  min-width: 200px;\r\n  height: 40vh;\r\n}\r\n\r\n.right-corner {\r\n  background-color: seagreen;\r\n  width: 42px;\r\n  height: 42px;\r\n  font-family: Impact;\r\n  font-size: xx-large;\r\n}\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvZmlzaGluZm8vZmlzaGluZm8uY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLDZCQUE2QjtFQUM3QixZQUFZO0VBQ1osWUFBWTtFQUNaLFlBQVk7QUFDZDs7QUFFQTtFQUNFLDJCQUEyQjtFQUMzQixZQUFZO0VBQ1osV0FBVztBQUNiOztBQUVBO0VBQ0UsVUFBVTtFQUNWLGdCQUFnQjtFQUNoQixZQUFZO0FBQ2Q7O0FBRUE7RUFDRSwwQkFBMEI7RUFDMUIsV0FBVztFQUNYLFlBQVk7RUFDWixtQkFBbUI7RUFDbkIsbUJBQW1CO0FBQ3JCIiwiZmlsZSI6InNyYy9hcHAvZmlzaGluZm8vZmlzaGluZm8uY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5pbmZvcm1hdGlvbk92ZXJsYXkge1xyXG4gIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50O1xyXG4gIG9wYWNpdHk6IDAuOTtcclxuICBjb2xvcjogYmxhY2s7XHJcbiAgcGFkZGluZzogMTAlO1xyXG59XHJcblxyXG4uaW5mb3JtYXRpb25UZXh0QXJlYSB7XHJcbiAgYmFja2dyb3VuZC1jb2xvcjogbGlnaHRncmF5O1xyXG4gIHBhZGRpbmc6IDEwJTtcclxuICB3aWR0aDogMTAwJTtcclxufVxyXG5cclxuLnByZXZpZXdQYWdlIHtcclxuICB3aWR0aDogNTAlO1xyXG4gIG1pbi13aWR0aDogMjAwcHg7XHJcbiAgaGVpZ2h0OiA0MHZoO1xyXG59XHJcblxyXG4ucmlnaHQtY29ybmVyIHtcclxuICBiYWNrZ3JvdW5kLWNvbG9yOiBzZWFncmVlbjtcclxuICB3aWR0aDogNDJweDtcclxuICBoZWlnaHQ6IDQycHg7XHJcbiAgZm9udC1mYW1pbHk6IEltcGFjdDtcclxuICBmb250LXNpemU6IHh4LWxhcmdlO1xyXG59XHJcbiJdfQ== */"
+
+/***/ }),
+
+/***/ "./src/app/fishinfo/fishinfo.component.html":
+/*!**************************************************!*\
+  !*** ./src/app/fishinfo/fishinfo.component.html ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"informationOverlay center-screen\">\r\n\r\n  <div class=\"informationTextArea center-screen\">\r\n\r\n    <div class=\"right-corner\" (click)=\"closeOverlay()\">\r\n      X\r\n    </div>\r\n\r\n\r\n    {{fish.sound}}\r\n    <div>{{fish.likes}}</div>\r\n    <br />\r\n    {{fish.summary}}\r\n\r\n    <div [hidden]=\"alreadyLiked\">\r\n      <br />\r\n      <img src=\"https://media.discordapp.net/attachments/562973773284769794/563339815886651393/Facebook_like_thumb.png\" width=\"50px\" (click)=\"increaseLikes()\" />\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "./src/app/fishinfo/fishinfo.component.ts":
+/*!************************************************!*\
+  !*** ./src/app/fishinfo/fishinfo.component.ts ***!
+  \************************************************/
+/*! exports provided: FishinfoComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FishinfoComponent", function() { return FishinfoComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _Fish__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Fish */ "./src/app/Fish.ts");
+/* harmony import */ var _fish_service_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../fish-service.service */ "./src/app/fish-service.service.ts");
+
+
+
+
+
+var FishinfoComponent = /** @class */ (function () {
+    function FishinfoComponent(route, router, fishService) {
+        this.route = route;
+        this.router = router;
+        this.fishService = fishService;
+        this.fish = new _Fish__WEBPACK_IMPORTED_MODULE_3__["Fish"]("ooo  o0 o0 o0 oo O O O0o 0", "https://zen.myatos.net/home", "To give new ideas a better platform to be noticed on, we would like to make an aquariumlike web app.");
+        this.alreadyLiked = false;
+    }
+    FishinfoComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        var id = this.route.snapshot.paramMap.get('id');
+        this.fishService.getFishById(id).subscribe(function (result) {
+            _this.fish = result;
+        });
+    };
+    FishinfoComponent.prototype.increaseLikes = function () {
+        this.fish.likes += 1;
+        this.alreadyLiked = true;
+    };
+    FishinfoComponent.prototype.closeOverlay = function (event) {
+        if (this.route.snapshot.paramMap.has('id')) {
+            this.router.navigateByUrl("");
+        }
+    };
+    FishinfoComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-fishinfo',
+            template: __webpack_require__(/*! ./fishinfo.component.html */ "./src/app/fishinfo/fishinfo.component.html"),
+            styles: [__webpack_require__(/*! ./fishinfo.component.css */ "./src/app/fishinfo/fishinfo.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"], _fish_service_service__WEBPACK_IMPORTED_MODULE_4__["FishServiceService"]])
+    ], FishinfoComponent);
+    return FishinfoComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/environments/environment.ts":
+/*!*****************************************!*\
+  !*** ./src/environments/environment.ts ***!
+  \*****************************************/
+/*! exports provided: environment */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "environment", function() { return environment; });
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
+var environment = {
+    production: false
+};
+/*
+ * For easier debugging in development mode, you can import the following file
+ * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
+ *
+ * This import should be commented out in production mode because it will have a negative impact
+ * on performance if an error is thrown.
+ */
+// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+
+
+/***/ }),
+
+/***/ "./src/main.ts":
+/*!*********************!*\
+  !*** ./src/main.ts ***!
+  \*********************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser-dynamic */ "./node_modules/@angular/platform-browser-dynamic/fesm5/platform-browser-dynamic.js");
+/* harmony import */ var _app_app_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app/app.module */ "./src/app/app.module.ts");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./environments/environment */ "./src/environments/environment.ts");
+
+
+
+
+if (_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].production) {
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["enableProdMode"])();
+}
+Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformBrowserDynamic"])().bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_2__["AppModule"])
+    .catch(function (err) { return console.error(err); });
+
+
+/***/ }),
+
+/***/ 0:
+/*!************************************************************************!*\
+  !*** multi (webpack)-dev-server/client?http://0.0.0.0:0 ./src/main.ts ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! C:\Users\A752266\Desktop\Aquarium\FishTank\FishTank\node_modules\webpack-dev-server\client\index.js?http://0.0.0.0:0 */"./node_modules/webpack-dev-server/client/index.js?http://0.0.0.0:0");
+module.exports = __webpack_require__(/*! C:\Users\A752266\Desktop\Aquarium\FishTank\FishTank\src\main.ts */"./src/main.ts");
+
+
+/***/ })
+
+},[[0,"runtime","vendor"]]]);
+//# sourceMappingURL=main.js.map
