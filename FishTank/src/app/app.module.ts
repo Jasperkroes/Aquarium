@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { FishComponent } from './fish/fish.component';
 import { FishinfoComponent } from './fishinfo/fishinfo.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AnimatedFishComponent } from './animated-fish/animated-fish.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FishComponent,
-    FishinfoComponent
+    FishinfoComponent,
+    AnimatedFishComponent
   ],
   imports: [
     BrowserModule,

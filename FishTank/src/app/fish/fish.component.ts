@@ -11,7 +11,6 @@ import { FishServiceService } from '../fish-service.service';
 export class FishComponent implements OnInit {
 
   public fishes: Fish[];
-  public noFishPressed = true;
 
   constructor(private router: Router, private fishService: FishServiceService) { }
 
@@ -28,8 +27,7 @@ export class FishComponent implements OnInit {
   }
 
   showFishPage(id: number) {
-    //this.router.navigateByUrl("/fishinfo/"+id);
-    this.noFishPressed = false;
+    this.router.navigateByUrl("/fishinfo/"+id);
   }
 
   public getImage(id: number): string {

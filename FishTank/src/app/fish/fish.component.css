@@ -1,4 +1,6 @@
 .tank {
   color: azure;
   text-align: center;
+  max-height: 100%;
+  max-width: 100%;
 }
