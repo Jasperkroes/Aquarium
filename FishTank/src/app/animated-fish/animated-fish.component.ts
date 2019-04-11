@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import * as THREE from 'three';
-import { Geometry, Euler, PlaneGeometry, MeshBasicMaterial } from 'three';
-import { Mesh } from 'three';
+import { Fish } from '../Fish';
 
 @Component({
   selector: 'app-animated-fish',
@@ -13,6 +12,8 @@ export class AnimatedFishComponent implements OnInit {
   renderer: THREE.WebGLRenderer;
   scene: THREE.Scene;
   camera: THREE.Camera;
+
+  @Input() fish: Fish;
 
   fishImage = require('../../assets/images/Facebook_like_thumb.png');
 
@@ -45,15 +46,15 @@ export class AnimatedFishComponent implements OnInit {
 
     this.scene.add(fishGeometry);
     this.scene.add(new THREE.AmbientLight(new THREE.Color(0x000)));
-
-    document.getElementById('content').appendChild(this.renderer.domElement);
+    //this.renderer.domElement.onclick(new Router().navigateByUrl("/fishinfo/" + this.fish.id));
+    document.getElementById('tank').appendChild(this.renderer.domElement);
     this.renderer.render(this.scene, this.camera);
     this.start();
   }
 
-  createFishMesh(): Mesh {
+  createFishMesh(): THREE.Mesh {
 
-    var fishGeometry: Geometry = new THREE.SphereGeometry(5);
+    var fishGeometry = new THREE.SphereGeometry(5);
 
     // instantiate a loader
     var loader = new THREE.TextureLoader();
@@ -66,5 +67,15 @@ export class AnimatedFishComponent implements OnInit {
     THREE.Mesh.call(fishMesh, fishGeometry, fishMeshMaterial);
 
     return fishMesh;
+  }
+
+  public getImage(id: number): string {
+    if (id % 3 == 0) {
+      return "http://greaterclevelandaquarium.com/wp-content/uploads/2018/07/Sailfin-Tang_outline-1.png";
+    } else if (id % 3 == 1) {
+      return "https://i.pinimg.com/originals/9a/1a/16/9a1a1601fd0852fc6ea1881f24621a92.png";
+    } else {
+      return "https://pics.clipartpng.com/Clown_fish_PNG_Clipart-430.png";
+    }
   }
 }
