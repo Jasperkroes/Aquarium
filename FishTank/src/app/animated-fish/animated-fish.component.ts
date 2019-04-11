@@ -15,7 +15,7 @@ export class AnimatedFishComponent implements OnInit {
 
   @Input() fish: Fish;
 
-  fishImage = require('../../assets/images/Facebook_like_thumb.png');
+  //fishImage = require('../../assets/images/Facebook_like_thumb.png');
 
   constructor() {
   }
@@ -47,7 +47,8 @@ export class AnimatedFishComponent implements OnInit {
     this.scene.add(fishGeometry);
     this.scene.add(new THREE.AmbientLight(new THREE.Color(0x000)));
     //this.renderer.domElement.onclick(new Router().navigateByUrl("/fishinfo/" + this.fish.id));
-    document.getElementById('tank').appendChild(this.renderer.domElement);
+    //TODO: dont put renderer as a child to the tank but put it in this component.
+    document.getElementsByClassName('tank')[0].appendChild(this.renderer.domElement);
     this.renderer.render(this.scene, this.camera);
     this.start();
   }
