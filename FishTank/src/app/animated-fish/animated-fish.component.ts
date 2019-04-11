@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as THREE from 'three';
 import { Fish } from '../Fish';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-animated-fish',
@@ -17,7 +18,7 @@ export class AnimatedFishComponent implements OnInit {
 
   //fishImage = require('../../assets/images/Facebook_like_thumb.png');
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   start() {
@@ -46,7 +47,9 @@ export class AnimatedFishComponent implements OnInit {
 
     this.scene.add(fishGeometry);
     this.scene.add(new THREE.AmbientLight(new THREE.Color(0x000)));
-    //this.renderer.domElement.onclick(new Router().navigateByUrl("/fishinfo/" + this.fish.id));
+
+    this.renderer.domElement.addEventListener("click", () => this.router.navigateByUrl("/fishinfo/"+this.fish.id));
+
     //TODO: dont put renderer as a child to the tank but put it in this component.
     document.getElementsByClassName('tank')[0].appendChild(this.renderer.domElement);
     this.renderer.render(this.scene, this.camera);
