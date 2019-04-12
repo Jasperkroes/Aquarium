@@ -1,73 +1,127 @@
-//import { Component, OnInit } from '@angular/core';
-//import * as THREE from "three";
+import { Component, OnInit, Input } from '@angular/core';
+import * as THREE from 'three';
+import { Fish } from '../Fish';
+import { Router } from '@angular/router';
 
-//@Component({
-//  selector: 'app-animated-fish',
-//  templateUrl: './animated-fish.component.html',
-//  styleUrls: ['./animated-fish.component.css']
-//})
-//export class AnimatedFishComponent implements OnInit {
-//  private _scene: THREE.Scene;
-//  //private _canvas: HTMLCanvasElement;
-//  private _camera: THREE.PerspectiveCamera;
-//  private _renderer: THREE.WebGLRenderer;
-//  private _axis: THREE.AxisHelper;
-//  private _light: THREE.DirectionalLight;
-//  private _light2: THREE.DirectionalLight;
-//  private _material: THREE.MeshBasicMaterial;
-//  private _box: THREE.Mesh;
+@Component({
+  selector: 'app-animated-fish',
+  templateUrl: './animated-fish.component.html',
+  styleUrls: ['./animated-fish.component.css']
+})
+export class AnimatedFishComponent implements OnInit {
 
-//  public constructor() {
-//    //this._canvas = <HTMLCanvasElement>document.getElementById(canvasElement);
-//    this._scene = new THREE.Scene(); // create the scene
-//    // create the camera
-//    this._camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-//    this._renderer = new THREE.WebGLRenderer();
-//    this._axis = new THREE.AxisHelper(10); // add axis to the scene
-//    this._light = new THREE.DirectionalLight(0xffffff, 1.0); // add light1
-//    this._light2 = new THREE.DirectionalLight(0xffffff, 1.0); // add light2
-//    this._material = new THREE.MeshBasicMaterial({
-//      color: 0xaaaaaa,
-//      wireframe: true
-//    });
-//    // create a box and add it to the scene
-//    this._box = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), this._material);
-//  }
+  renderer: THREE.WebGLRenderer;
+  scene: THREE.Scene;
+  camera: THREE.Camera;
+  mesh: THREE.Mesh;
 
-//  ngOnInit(): void {
-//    this.createScene();
-//    this.animate();
-//  }
+  @Input() fish: Fish;
 
-//  public createScene(): void {
-//    // set size
-//    this._renderer.setSize(window.innerWidth, window.innerHeight);
-//    document.body.appendChild(this._renderer.domElement); // add canvas to dom
-//    this._scene.add(this._axis);
-//    this._light.position.set(100, 100, 100);
-//    this._scene.add(this._light);
-//    this._light2.position.set(-100, 100, -100)
-//    this._scene.add(this._light2);
-//    this._scene.add(this._box)
-//    this._box.position.x = 0.5;
-//    this._box.rotation.y = 0.5;
+  //fishImage = require('../../assets/images/Facebook_like_thumb.png');
 
-//    this._camera.position.x = 5;
-//    this._camera.position.y = 5;
-//    this._camera.position.z = 5;
+  constructor(private router: Router) {
+  }
 
-//    this._camera.lookAt(this._scene.position);
-//  }
+  start() {
+    this.render();
+  }
 
-//  public animate(): void {
-//    requestAnimationFrame(this.animate.bind(this));
-//    this._render();
-//  }
+  render() {
+    requestAnimationFrame(() => this.render());
+    this.renderer.render(this.scene, this.camera);
 
-//  private _render(): void {
-//    let timer = 0.002 * Date.now();
-//    this._box.position.y = 0.5 + 0.5 * Math.sin(timer);
-//    this._box.rotation.x += 0.1;
-//    this._renderer.render(this._scene, this._camera);
-//  }
-//}
+    //animate the fish
+    this.animateScene();
+  }
+
+  animateScene() {
+    const fish = this.mesh;
+    const speed: number = 0.3
+    //simple rotation
+    fish.rotation.x += (Math.PI / 180) * speed;
+    fish.rotation.y += (Math.PI / 180) * speed;
+    fish.rotation.z += (Math.PI / 180) * speed;
+
+  }
+
+  ngOnInit(): void {
+
+    //Create a scene
+    this.scene = new THREE.Scene();
+
+    //Create the renderer
+    this.renderer = new THREE.WebGLRenderer({ alpha: true });
+    this.renderer.setSize(100, 100);
+    this.renderer.setClearAlpha(0);
+
+    //Create a camera
+    this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+    this.camera.position.set(0, 0, -20);
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    //Create a simple mesh
+    this.mesh = this.createFishMesh();
+
+    //add the mesh to the scene
+    this.scene.add(this.mesh);
+
+    //add a light to the scene
+    this.scene.add(new THREE.AmbientLight(new THREE.Color(0x000)));
+
+    //add eventlistener to the renderer
+    //on click the fish info page is shown
+    this.renderer.domElement.addEventListener("click", () => this.showFishInfoPage());
+    this.renderer.domElement.className = "animatedFish";
+
+    //TODO: dont put renderer as a child to the tank but put it in this component.
+    //add renderer to the tank
+    document.body.appendChild(this.renderer.domElement);
+
+    //render the scene
+    this.renderer.render(this.scene, this.camera);
+
+    //start the render loop
+    this.start();
+  }
+
+  /**
+   * Create a simple fish mesh.
+   **/
+  createFishMesh(): THREE.Mesh {
+
+    var fishGeometry = new THREE.SphereGeometry(5);
+
+    // instantiate a loader
+    var loader = new THREE.TextureLoader();
+
+    // Create a wireframe material that's blueish
+    var fishMeshMaterial = new THREE.MeshBasicMaterial(
+      { color: 0x7777ff, wireframe: true });
+
+    var fishMesh: THREE.Mesh = new THREE.Mesh();
+    THREE.Mesh.call(fishMesh, fishGeometry, fishMeshMaterial);
+
+    fishMesh.position.set(0, 0, 0);
+
+    return fishMesh;
+  }
+
+  public getImage(id: number): string {
+    if (id % 3 == 0) {
+      return "http://greaterclevelandaquarium.com/wp-content/uploads/2018/07/Sailfin-Tang_outline-1.png";
+    } else if (id % 3 == 1) {
+      return "https://i.pinimg.com/originals/9a/1a/16/9a1a1601fd0852fc6ea1881f24621a92.png";
+    } else {
+      return "https://pics.clipartpng.com/Clown_fish_PNG_Clipart-430.png";
+    }
+  }
+
+  private showFishInfoPage() {
+    var paras = document.getElementsByClassName("animatedFish");
+
+    while (paras[0]) {
+      paras[0].parentNode.removeChild(paras[0]);
+    }​
+    this.router.navigateByUrl("/fishinfo/" + this.fish.id)
+  }
+}
