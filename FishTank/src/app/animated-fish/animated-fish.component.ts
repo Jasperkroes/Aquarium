@@ -15,7 +15,7 @@ export class AnimatedFishComponent implements OnInit {
   camera: THREE.Camera;
   mesh: THREE.Mesh;
 
-  @Input() fish: Fish;
+  @Input() fishes: Fish[];
 
   //fishImage = require('../../assets/images/Facebook_like_thumb.png');
 
@@ -45,6 +45,10 @@ export class AnimatedFishComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initScene();
+  }
+
+  initScene(): void {
 
     //Create a scene
     this.scene = new THREE.Scene();
@@ -59,18 +63,23 @@ export class AnimatedFishComponent implements OnInit {
     this.camera.position.set(0, 0, -20);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    //Create a simple mesh
-    this.mesh = this.createFishMesh();
+    this.fishes.forEach((fish: Fish) => {
+      //Create a simple mesh
+      var mesh = this.createFishMesh();
 
-    //add the mesh to the scene
-    this.scene.add(this.mesh);
+      //add eventlistener to the renderer
+      //on click the fish info page is shown
+      mesh.addEventListener("click", () => this.showFishInfoPage(fish.id));
+
+      //add the mesh to the scene
+      this.scene.add(mesh);
+    });
+
 
     //add a light to the scene
     this.scene.add(new THREE.AmbientLight(new THREE.Color(0x000)));
 
-    //add eventlistener to the renderer
-    //on click the fish info page is shown
-    this.renderer.domElement.addEventListener("click", () => this.showFishInfoPage());
+
     this.renderer.domElement.className = "animatedFish";
 
     //TODO: dont put renderer as a child to the tank but put it in this component.
@@ -116,12 +125,12 @@ export class AnimatedFishComponent implements OnInit {
     }
   }
 
-  private showFishInfoPage() {
+  private showFishInfoPage(id: number) {
     var paras = document.getElementsByClassName("animatedFish");
 
     while (paras[0]) {
       paras[0].parentNode.removeChild(paras[0]);
     }​
-    this.router.navigateByUrl("/fishinfo/" + this.fish.id)
+    this.router.navigateByUrl("/fishinfo/" + id);
   }
 }
