@@ -19,12 +19,12 @@ export class FishinfoComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private fishService: FishServiceService) { }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.fishService.getFishById(id).subscribe(
-      result => {
-        this.fish = result;
-      }
-    );
+      const id = this.route.snapshot.paramMap.get('id');
+      this.fishService.getFishById(id).subscribe(
+        result => {
+          this.fish = result;
+        }
+      );
   }
 
   increaseLikes() {

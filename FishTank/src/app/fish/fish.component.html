@@ -1,9 +1,6 @@
-<div class="tank center-screen">
-  <div *ngFor="let fish of fishes">
-    <div routerLink="/fishinfo/{{fish.id}}">
-      <!--<img src={{getImage(fish.id)}} width="70px">-->
-      <app-animated-fish [fish]=fish></app-animated-fish>
-    </div>
+<div *ngFor="let fish of fishes">
+  <div routerLink="/fishinfo/{{fish.id}}" id="afish">
+    <!--<img src={{getImage(fish.id)}} width="70px">-->
+    <app-animated-fish [fish]=fish></app-animated-fish>
   </div>
 </div>
-

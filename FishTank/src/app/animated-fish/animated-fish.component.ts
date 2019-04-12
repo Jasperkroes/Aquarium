@@ -13,6 +13,7 @@ export class AnimatedFishComponent implements OnInit {
   renderer: THREE.WebGLRenderer;
   scene: THREE.Scene;
   camera: THREE.Camera;
+  mesh: THREE.Mesh;
 
   @Input() fish: Fish;
 
@@ -28,34 +29,64 @@ export class AnimatedFishComponent implements OnInit {
   render() {
     requestAnimationFrame(() => this.render());
     this.renderer.render(this.scene, this.camera);
+
+    //animate the fish
+    this.animateScene();
+  }
+
+  animateScene() {
+    const fish = this.mesh;
+    const speed: number = 0.3
+    //simple rotation
+    fish.rotation.x += (Math.PI / 180) * speed;
+    fish.rotation.y += (Math.PI / 180) * speed;
+    fish.rotation.z += (Math.PI / 180) * speed;
+
   }
 
   ngOnInit(): void {
+
+    //Create a scene
     this.scene = new THREE.Scene();
 
+    //Create the renderer
     this.renderer = new THREE.WebGLRenderer({ alpha: true });
     this.renderer.setSize(100, 100);
     this.renderer.setClearAlpha(0);
-   
+
+    //Create a camera
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
     this.camera.position.set(0, 0, -20);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    var fishGeometry = this.createFishMesh();
+    //Create a simple mesh
+    this.mesh = this.createFishMesh();
 
-    fishGeometry.position.set(0, 0, 0);
+    //add the mesh to the scene
+    this.scene.add(this.mesh);
 
-    this.scene.add(fishGeometry);
+    //add a light to the scene
     this.scene.add(new THREE.AmbientLight(new THREE.Color(0x000)));
 
-    this.renderer.domElement.addEventListener("click", () => this.router.navigateByUrl("/fishinfo/"+this.fish.id));
+    //add eventlistener to the renderer
+    //on click the fish info page is shown
+    this.renderer.domElement.addEventListener("click", () => this.showFishInfoPage());
+    this.renderer.domElement.className = "animatedFish";
 
     //TODO: dont put renderer as a child to the tank but put it in this component.
-    document.getElementsByClassName('tank')[0].appendChild(this.renderer.domElement);
+    //add renderer to the tank
+    document.body.appendChild(this.renderer.domElement);
+
+    //render the scene
     this.renderer.render(this.scene, this.camera);
+
+    //start the render loop
     this.start();
   }
 
+  /**
+   * Create a simple fish mesh.
+   **/
   createFishMesh(): THREE.Mesh {
 
     var fishGeometry = new THREE.SphereGeometry(5);
@@ -70,6 +101,8 @@ export class AnimatedFishComponent implements OnInit {
     var fishMesh: THREE.Mesh = new THREE.Mesh();
     THREE.Mesh.call(fishMesh, fishGeometry, fishMeshMaterial);
 
+    fishMesh.position.set(0, 0, 0);
+
     return fishMesh;
   }
 
@@ -81,5 +114,14 @@ export class AnimatedFishComponent implements OnInit {
     } else {
       return "https://pics.clipartpng.com/Clown_fish_PNG_Clipart-430.png";
     }
+  }
+
+  private showFishInfoPage() {
+    var paras = document.getElementsByClassName("animatedFish");
+
+    while (paras[0]) {
+      paras[0].parentNode.removeChild(paras[0]);
+    }​
+    this.router.navigateByUrl("/fishinfo/" + this.fish.id)
   }
 }
