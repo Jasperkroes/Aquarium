@@ -1,6 +1,5 @@
-<div *ngFor="let fish of fishes">
-  <div routerLink="/fishinfo/{{fish.id}}" id="afish">
-    <!--<img src={{getImage(fish.id)}} width="70px">-->
-    <app-animated-fish [fish]=fish></app-animated-fish>
+<div id="tank" class="center-screen">
+  <div *ngIf="fishes">
+    <app-animated-fish [fishes]="fishes"></app-animated-fish>
   </div>
 </div>

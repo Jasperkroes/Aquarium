@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import * as THREE from 'three';
 import { Fish } from '../Fish';
 import { Router } from '@angular/router';
+import { Mesh, Raycaster, Vector3 } from 'three';
+
 
 @Component({
   selector: 'app-animated-fish',
@@ -13,13 +15,18 @@ export class AnimatedFishComponent implements OnInit {
   renderer: THREE.WebGLRenderer;
   scene: THREE.Scene;
   camera: THREE.Camera;
-  mesh: THREE.Mesh;
+  targetList: THREE.Mesh[] = [];
 
-  @Input() fish: Fish;
+  @Input() fishes: Fish[];
 
   //fishImage = require('../../assets/images/Facebook_like_thumb.png');
 
   constructor(private router: Router) {
+  }
+
+  ngOnInit(): void {
+    console.log(this.fishes);
+    this.initScene();
   }
 
   start() {
@@ -31,51 +38,90 @@ export class AnimatedFishComponent implements OnInit {
     this.renderer.render(this.scene, this.camera);
 
     //animate the fish
-    this.animateScene();
+    this.scene.children.forEach((obj: Mesh) => {
+      this.animateScene(obj);
+    })
+
   }
 
-  animateScene() {
-    const fish = this.mesh;
+  animateScene(mesh: Mesh) {
+    const fish = mesh;
     const speed: number = 0.3
     //simple rotation
     fish.rotation.x += (Math.PI / 180) * speed;
     fish.rotation.y += (Math.PI / 180) * speed;
     fish.rotation.z += (Math.PI / 180) * speed;
 
+    if (Math.random() < 0.3) {
+      this.swim(fish);
+    }
   }
 
-  ngOnInit(): void {
+  swim(fish: Mesh) {
+    fish.position.x += 1.5 * (Math.random() - 0.5);
+    fish.position.y += 1.5 * (Math.random() - 0.5);
+    fish.position.z += 1.5 * (Math.random() - 0.5);
+  }
+
+  initScene(): void {
 
     //Create a scene
     this.scene = new THREE.Scene();
 
     //Create the renderer
     this.renderer = new THREE.WebGLRenderer({ alpha: true });
-    this.renderer.setSize(100, 100);
     this.renderer.setClearAlpha(0);
 
     //Create a camera
-    this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
-    this.camera.position.set(0, 0, -20);
+    this.camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 1000);
+    this.camera.position.set(0, 0, -200);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    //Create a simple mesh
-    this.mesh = this.createFishMesh();
+    this.fishes.forEach((fish: Fish) => {
+      //Create a simple mesh
+      var mesh = this.createFishMesh();
 
-    //add the mesh to the scene
-    this.scene.add(this.mesh);
+      //add eventlistener to the renderer
+      //on click the fish info page is shown
+//      mesh.addEventListener("click", () => this.showFishInfoPage(fish.id));
+      mesh.name = ""+fish.id;
+
+      //add the mesh to the scene
+      this.scene.add(mesh);
+      this.targetList.push(mesh);
+    });
+
+
 
     //add a light to the scene
     this.scene.add(new THREE.AmbientLight(new THREE.Color(0x000)));
 
-    //add eventlistener to the renderer
-    //on click the fish info page is shown
-    this.renderer.domElement.addEventListener("click", () => this.showFishInfoPage());
-    this.renderer.domElement.className = "animatedFish";
+
+    this.renderer.domElement.className = "animatedFish center-screen";
 
     //TODO: dont put renderer as a child to the tank but put it in this component.
     //add renderer to the tank
-    document.body.appendChild(this.renderer.domElement);
+    document.getElementById("tank").appendChild(this.renderer.domElement);
+
+
+    document.getElementById("tank").addEventListener('click', (event) => {
+      // calculate mouse position in normalized device coordinates
+	    // (-1 to +1) for both components
+      const x = (event.clientX / window.innerWidth) * 2 - 1;
+      const y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+      //cast a ray from the camera towards the mouse position
+      const raycaster = new Raycaster();
+      raycaster.setFromCamera({ x, y }, this.camera);
+      const intersections = raycaster.intersectObjects(this.targetList);
+
+      //take the nearest (z-plane) intersecting fish and show its information
+      if (intersections.length > 0) {
+        this.showFishInfoPage(intersections[0].object.name);
+      }
+
+
+    }, false);
 
     //render the scene
     this.renderer.render(this.scene, this.camera);
@@ -89,19 +135,15 @@ export class AnimatedFishComponent implements OnInit {
    **/
   createFishMesh(): THREE.Mesh {
 
-    var fishGeometry = new THREE.SphereGeometry(5);
+    var fishGeometry = new THREE.SphereGeometry(10);
 
     // instantiate a loader
     var loader = new THREE.TextureLoader();
 
     // Create a wireframe material that's blueish
-    var fishMeshMaterial = new THREE.MeshBasicMaterial(
-      { color: 0x7777ff, wireframe: true });
+    var fishMeshMaterial = new THREE.MeshNormalMaterial();
 
-    var fishMesh: THREE.Mesh = new THREE.Mesh();
-    THREE.Mesh.call(fishMesh, fishGeometry, fishMeshMaterial);
-
-    fishMesh.position.set(0, 0, 0);
+    var fishMesh: THREE.Mesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
 
     return fishMesh;
   }
@@ -116,12 +158,12 @@ export class AnimatedFishComponent implements OnInit {
     }
   }
 
-  private showFishInfoPage() {
+  private showFishInfoPage(id: string) {
     var paras = document.getElementsByClassName("animatedFish");
 
     while (paras[0]) {
       paras[0].parentNode.removeChild(paras[0]);
     }​
-    this.router.navigateByUrl("/fishinfo/" + this.fish.id)
+    this.router.navigateByUrl("/fishinfo/" + id);
   }
 }
