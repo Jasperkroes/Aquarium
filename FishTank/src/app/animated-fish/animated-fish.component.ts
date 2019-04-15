@@ -70,6 +70,7 @@ export class AnimatedFishComponent implements OnInit {
 
     //Create the renderer
     this.renderer = new THREE.WebGLRenderer({ alpha: true });
+    this.renderer.setSize(screen.availWidth, screen.availHeight);
     this.renderer.setClearAlpha(0);
 
     //Create a camera
@@ -135,8 +136,8 @@ export class AnimatedFishComponent implements OnInit {
    **/
   createFishMesh(): THREE.Mesh {
 
-    var fishGeometry = new THREE.SphereGeometry(10);
-
+    var fishGeometry = new THREE.SphereGeometry(8, 30, 20);
+    
     // instantiate a loader
     var loader = new THREE.TextureLoader();
 
