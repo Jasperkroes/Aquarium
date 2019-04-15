@@ -1,1 +1,5 @@
-<app-animated-fish [fishes]=fishes></app-animated-fish>
+<div id="tank" class="center-screen">
+  <div *ngIf="fishes">
+    <app-animated-fish [fishes]="fishes"></app-animated-fish>
+  </div>
+</div>

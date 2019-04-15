@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import * as THREE from 'three';
 import { Fish } from '../Fish';
 import { Router } from '@angular/router';
+import { Mesh, Raycaster, Vector3 } from 'three';
+
 
 @Component({
   selector: 'app-animated-fish',
@@ -13,13 +15,18 @@ export class AnimatedFishComponent implements OnInit {
   renderer: THREE.WebGLRenderer;
   scene: THREE.Scene;
   camera: THREE.Camera;
-  mesh: THREE.Mesh;
+  targetList: THREE.Mesh[] = [];
 
   @Input() fishes: Fish[];
 
   //fishImage = require('../../assets/images/Facebook_like_thumb.png');
 
   constructor(private router: Router) {
+  }
+
+  ngOnInit(): void {
+    console.log(this.fishes);
+    this.initScene();
   }
 
   start() {
@@ -31,21 +38,20 @@ export class AnimatedFishComponent implements OnInit {
     this.renderer.render(this.scene, this.camera);
 
     //animate the fish
-    this.animateScene();
+    this.scene.children.forEach((obj: Mesh) => {
+      this.animateScene(obj);
+    })
+
   }
 
-  animateScene() {
-    const fish = this.mesh;
+  animateScene(mesh: Mesh) {
+    const fish = mesh;
     const speed: number = 0.3
     //simple rotation
     fish.rotation.x += (Math.PI / 180) * speed;
     fish.rotation.y += (Math.PI / 180) * speed;
     fish.rotation.z += (Math.PI / 180) * speed;
 
-  }
-
-  ngOnInit(): void {
-    this.initScene();
   }
 
   initScene(): void {
@@ -69,11 +75,14 @@ export class AnimatedFishComponent implements OnInit {
 
       //add eventlistener to the renderer
       //on click the fish info page is shown
-      mesh.addEventListener("click", () => this.showFishInfoPage(fish.id));
+//      mesh.addEventListener("click", () => this.showFishInfoPage(fish.id));
+      mesh.name = ""+fish.id;
 
       //add the mesh to the scene
       this.scene.add(mesh);
+      this.targetList.push(mesh);
     });
+
 
 
     //add a light to the scene
@@ -84,7 +93,23 @@ export class AnimatedFishComponent implements OnInit {
 
     //TODO: dont put renderer as a child to the tank but put it in this component.
     //add renderer to the tank
-    document.body.appendChild(this.renderer.domElement);
+    document.getElementById("tank").appendChild(this.renderer.domElement);
+
+
+    document.getElementById("tank").addEventListener('click', (event) => {
+      const x = (event.clientX / window.innerWidth) * 2 - 1;
+      const y = - (event.clientY / window.innerHeight) * 2 + 1;
+         
+      const raycaster = new Raycaster();
+      raycaster.setFromCamera({ x, y }, this.camera);
+      const intersections = raycaster.intersectObjects(this.targetList);
+
+      if (intersections.length > 0) {
+        this.showFishInfoPage(intersections[0].object.name);
+      }
+
+
+    }, false);
 
     //render the scene
     this.renderer.render(this.scene, this.camera);
@@ -107,10 +132,7 @@ export class AnimatedFishComponent implements OnInit {
     var fishMeshMaterial = new THREE.MeshBasicMaterial(
       { color: 0x7777ff, wireframe: true });
 
-    var fishMesh: THREE.Mesh = new THREE.Mesh();
-    THREE.Mesh.call(fishMesh, fishGeometry, fishMeshMaterial);
-
-    fishMesh.position.set(0, 0, 0);
+    var fishMesh: THREE.Mesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
 
     return fishMesh;
   }
@@ -125,7 +147,7 @@ export class AnimatedFishComponent implements OnInit {
     }
   }
 
-  private showFishInfoPage(id: number) {
+  private showFishInfoPage(id: string) {
     var paras = document.getElementsByClassName("animatedFish");
 
     while (paras[0]) {
