@@ -19,8 +19,6 @@ export class AnimatedFishComponent implements OnInit {
 
   @Input() fishes: Fish[];
 
-  //fishImage = require('../../assets/images/Facebook_like_thumb.png');
-
   constructor(private router: Router) {
   }
 
@@ -29,10 +27,16 @@ export class AnimatedFishComponent implements OnInit {
     this.initScene();
   }
 
+  /**
+   * Start the render process.
+   */
   start() {
     this.render();
   }
 
+  /**
+   * Render the scene every frame.
+   */
   render() {
     requestAnimationFrame(() => this.render());
     this.renderer.render(this.scene, this.camera);
@@ -44,25 +48,37 @@ export class AnimatedFishComponent implements OnInit {
 
   }
 
+  /**
+   * Animate a mesh.
+   * @param mesh the mesh to be animated.
+   */
   animateScene(mesh: Mesh) {
     const fish = mesh;
-    const speed: number = 0.3
-    //simple rotation
-    fish.rotation.x += (Math.PI / 180) * speed;
-    fish.rotation.y += (Math.PI / 180) * speed;
-    fish.rotation.z += (Math.PI / 180) * speed;
+    //const speed: number = 0.3
+    ////simple rotation
+    //fish.rotation.x += (Math.PI / 180) * speed;
+    //fish.rotation.y += (Math.PI / 180) * speed;
+    //fish.rotation.z += (Math.PI / 180) * speed;
 
     if (Math.random() < 0.3) {
       this.swim(fish);
     }
   }
 
+  /**
+   * Move a mesh to a new position in the x,y,z-plane according to the swmming algorithm.
+   * 
+   * @param fish the Mesh that will swim
+   */
   swim(fish: Mesh) {
     fish.position.x += 1.5 * (Math.random() - 0.5);
     fish.position.y += 1.5 * (Math.random() - 0.5);
     fish.position.z += 1.5 * (Math.random() - 0.5);
   }
 
+  /**
+   * Initialize the scene/renderer/camera/fishes.
+   */
   initScene(): void {
 
     //Create a scene
@@ -78,34 +94,31 @@ export class AnimatedFishComponent implements OnInit {
     this.camera.position.set(0, 0, -200);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
+    //Create fishes
     this.fishes.forEach((fish: Fish) => {
       //Create a simple mesh
       var mesh = this.createFishMesh();
 
-      //add eventlistener to the renderer
-      //on click the fish info page is shown
-//      mesh.addEventListener("click", () => this.showFishInfoPage(fish.id));
       mesh.name = ""+fish.id;
 
-      //add the mesh to the scene
+      //add the fishmesh to the scene
       this.scene.add(mesh);
       this.targetList.push(mesh);
     });
 
-
-
     //add a light to the scene
     this.scene.add(new THREE.AmbientLight(new THREE.Color(0x000)));
 
-
+    //the animated fish class makes it so that the fishes wont duplicate themselves.
+    //the center-screen class will make sure that the entire screen is used.
     this.renderer.domElement.className = "animatedFish center-screen";
 
-    //TODO: dont put renderer as a child to the tank but put it in this component.
     //add renderer to the tank
     document.getElementById("tank").appendChild(this.renderer.domElement);
 
-
+    //Add an eventlistener to the tank. When a fish is clicked it will sow its information.
     document.getElementById("tank").addEventListener('click', (event) => {
+
       // calculate mouse position in normalized device coordinates
 	    // (-1 to +1) for both components
       const x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -114,17 +127,17 @@ export class AnimatedFishComponent implements OnInit {
       //cast a ray from the camera towards the mouse position
       const raycaster = new Raycaster();
       raycaster.setFromCamera({ x, y }, this.camera);
+
+      //Get all meshes (fishes) under the mouse.
       const intersections = raycaster.intersectObjects(this.targetList);
 
       //take the nearest (z-plane) intersecting fish and show its information
       if (intersections.length > 0) {
         this.showFishInfoPage(intersections[0].object.name);
       }
-
-
     }, false);
 
-    //render the scene
+    //render the initial scene
     this.renderer.render(this.scene, this.camera);
 
     //start the render loop
@@ -149,16 +162,11 @@ export class AnimatedFishComponent implements OnInit {
     return fishMesh;
   }
 
-  public getImage(id: number): string {
-    if (id % 3 == 0) {
-      return "http://greaterclevelandaquarium.com/wp-content/uploads/2018/07/Sailfin-Tang_outline-1.png";
-    } else if (id % 3 == 1) {
-      return "https://i.pinimg.com/originals/9a/1a/16/9a1a1601fd0852fc6ea1881f24621a92.png";
-    } else {
-      return "https://pics.clipartpng.com/Clown_fish_PNG_Clipart-430.png";
-    }
-  }
-
+  /**
+   * Navigate to a page that shows the information of the fish with id :id.
+   * 
+   * @param id a string of the id of the fish. 
+   */
   private showFishInfoPage(id: string) {
     var paras = document.getElementsByClassName("animatedFish");
 
