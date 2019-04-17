@@ -23,7 +23,6 @@ export class AnimatedFishComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.fishes);
     this.initScene();
   }
 
@@ -55,7 +54,7 @@ export class AnimatedFishComponent implements OnInit {
   animateScene(mesh: Mesh) {
     const fish = mesh;
     //const speed: number = 0.3
-    ////simple rotation
+    //simple rotation
     //fish.rotation.x += (Math.PI / 180) * speed;
     //fish.rotation.y += (Math.PI / 180) * speed;
     //fish.rotation.z += (Math.PI / 180) * speed;
@@ -96,10 +95,9 @@ export class AnimatedFishComponent implements OnInit {
 
     //Create fishes
     this.fishes.forEach((fish: Fish) => {
-      //Create a simple mesh
-      var mesh = this.createFishMesh();
 
-      mesh.name = ""+fish.id;
+      //Create a simple mesh
+      var mesh = this.createFishMesh(fish);
 
       //add the fishmesh to the scene
       this.scene.add(mesh);
@@ -120,7 +118,7 @@ export class AnimatedFishComponent implements OnInit {
     document.getElementById("tank").addEventListener('click', (event) => {
 
       // calculate mouse position in normalized device coordinates
-	    // (-1 to +1) for both components
+      // (-1 to +1) for both components
       const x = (event.clientX / window.innerWidth) * 2 - 1;
       const y = - (event.clientY / window.innerHeight) * 2 + 1;
 
@@ -147,17 +145,19 @@ export class AnimatedFishComponent implements OnInit {
   /**
    * Create a simple fish mesh.
    **/
-  createFishMesh(): THREE.Mesh {
+  createFishMesh(fish: Fish): THREE.Mesh {
 
     var fishGeometry = new THREE.SphereGeometry(8, 30, 20);
-    
-    // instantiate a loader
-    var loader = new THREE.TextureLoader();
+
+    var fishTexture = this.calculateTexture(fish);
 
     // Create a wireframe material that's blueish
-    var fishMeshMaterial = new THREE.MeshNormalMaterial();
+    var fishMeshMaterial = new THREE.MeshBasicMaterial({ color: fishTexture });
 
     var fishMesh: THREE.Mesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
+
+    //give the fish a name (used for routing)
+    fishMesh.name = "" + fish.id;
 
     return fishMesh;
   }
@@ -172,7 +172,15 @@ export class AnimatedFishComponent implements OnInit {
 
     while (paras[0]) {
       paras[0].parentNode.removeChild(paras[0]);
-    }​
+    }
     this.router.navigateByUrl("/fishinfo/" + id);
+  }
+
+  private calculateTexture(fish: Fish): THREE.Color {
+    var color = new THREE.Color(0xff1394);
+    if (fish.id > 2) {
+      color.setHex(0x0066a1);
+    }
+    return color;
   }
 }
