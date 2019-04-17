@@ -70,9 +70,35 @@ export class AnimatedFishComponent implements OnInit {
    * @param fish the Mesh that will swim
    */
   swim(fish: Mesh) {
-    fish.position.x += 1.5 * (Math.random() - 0.5);
-    fish.position.y += 1.5 * (Math.random() - 0.5);
-    fish.position.z += 1.5 * (Math.random() - 0.5);
+    var deltax = 1.5 * (Math.random() - 0.5);
+    var deltay = 1.5 * (Math.random() - 0.5);
+    var deltaz = 1.5 * (Math.random() - 0.5);
+
+    var tempPos = fish.position;
+    fish.position.addVectors(tempPos, new Vector3(deltax, deltay, deltaz));
+    
+    if (this.inbounds(tempPos)) {
+      fish.position.set(tempPos.x, tempPos.y, tempPos.z);
+    } else {
+      fish.position.set(-tempPos.x, -tempPos.y, -tempPos.z);
+    }
+  }
+
+  /**
+   * Checks whether vector is somewhere on the screen.
+   * 
+   * @param vector the vector to be checked
+   * @returns true iff the vector is not on the screen
+   */
+  private inbounds(vector: Vector3): boolean {
+    var copy = new Vector3();
+    copy.copy(vector);
+    copy.project(this.camera);
+    console.log(copy.y);
+    if (copy.y > 1 || copy.y < -1 || copy.x > 1 || copy.x < -1) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -85,11 +111,11 @@ export class AnimatedFishComponent implements OnInit {
 
     //Create the renderer
     this.renderer = new THREE.WebGLRenderer({ alpha: true });
-    this.renderer.setSize(screen.availWidth, screen.availHeight);
+    this.renderer.setSize(innerWidth, innerHeight);
     this.renderer.setClearAlpha(0);
 
     //Create a camera
-    this.camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 1000);
     this.camera.position.set(0, 0, -200);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
