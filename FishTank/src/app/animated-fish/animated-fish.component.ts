@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import * as THREE from 'three';
 import { Fish } from '../Fish';
 import { Router } from '@angular/router';
-import { Mesh, Raycaster, Vector3 } from 'three';
+import { Mesh, Raycaster, Vector3, Texture, Scene } from 'three';
+import { TextureLoader } from 'three';
 
 
 @Component({
@@ -70,9 +71,9 @@ export class AnimatedFishComponent implements OnInit {
    * @param fish the Mesh that will swim
    */
   swim(fish: Mesh) {
-    var deltax = 1.5 * (Math.random() - 0.5);
-    var deltay = 1.5 * (Math.random() - 0.5);
-    var deltaz = 1.5 * (Math.random() - 0.5);
+    var deltax = 3 * (Math.random() - 0.5);
+    var deltay = 3 * (Math.random() - 0.5);
+    var deltaz = 3 * (Math.random() - 0.5);
 
     var tempPos = fish.position;
     fish.position.addVectors(tempPos, new Vector3(deltax, deltay, deltaz));
@@ -94,7 +95,7 @@ export class AnimatedFishComponent implements OnInit {
     var copy = new Vector3();
     copy.copy(vector);
     copy.project(this.camera);
-    console.log(copy.y);
+
     if (copy.y > 1 || copy.y < -1 || copy.x > 1 || copy.x < -1) {
       return false;
     }
@@ -119,19 +120,40 @@ export class AnimatedFishComponent implements OnInit {
     this.camera.position.set(0, 0, -200);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    //Create fishes
-    this.fishes.forEach((fish: Fish) => {
-
-      //Create a simple mesh
-      var mesh = this.createFishMesh(fish);
-
-      //add the fishmesh to the scene
-      this.scene.add(mesh);
-      this.targetList.push(mesh);
-    });
-
     //add a light to the scene
     this.scene.add(new THREE.AmbientLight(new THREE.Color(0x000)));
+
+    /**
+     * Create a simple fish mesh.
+     **/
+    var createFishMesh = function (fish: Fish, texture: Texture, scene: THREE.Scene, targetList: THREE.Mesh[]) {
+      var fishGeometry = new THREE.SphereGeometry(8, 30, 20);
+
+      // Create a wireframe material that's blueish
+      var fishMeshMaterial = new THREE.MeshBasicMaterial({ map: texture, flatShading: true });
+
+      var fishMesh: THREE.Mesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
+
+      //give the fish a name (used for routing)
+      fishMesh.name = "" + fish.id;
+
+      //add the fishmesh to the scene
+      scene.add(fishMesh);
+      targetList.push(fishMesh);
+    }
+
+    //Create fishes
+    this.fishes.forEach((fish: Fish) => {
+      var scene = this.scene;
+      var targetList = this.targetList;
+
+      var onLoad = function (texture: THREE.Texture) {
+        createFishMesh(fish, texture, scene, targetList);
+      }
+      //Create a simple mesh
+      new TextureLoader().load("https://media.discordapp.net/attachments/545539481239814165/577861279591563264/Blue-Penguin-Globe.png", onLoad)
+
+    });
 
     //the animated fish class makes it so that the fishes wont duplicate themselves.
     //the center-screen class will make sure that the entire screen is used.
@@ -140,7 +162,7 @@ export class AnimatedFishComponent implements OnInit {
     //add renderer to the tank
     document.getElementById("tank").appendChild(this.renderer.domElement);
 
-    //Add an eventlistener to the tank. When a fish is clicked it will sow its information.
+    //Add an eventlistener to the tank. When a fish is clicked it will show its information.
     document.getElementById("tank").addEventListener('click', (event) => {
 
       // calculate mouse position in normalized device coordinates
@@ -166,26 +188,6 @@ export class AnimatedFishComponent implements OnInit {
 
     //start the render loop
     this.start();
-  }
-
-  /**
-   * Create a simple fish mesh.
-   **/
-  createFishMesh(fish: Fish): THREE.Mesh {
-
-    var fishGeometry = new THREE.SphereGeometry(8, 30, 20);
-
-    var fishTexture = this.calculateTexture(fish);
-
-    // Create a wireframe material that's blueish
-    var fishMeshMaterial = new THREE.MeshBasicMaterial({ color: fishTexture });
-
-    var fishMesh: THREE.Mesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
-
-    //give the fish a name (used for routing)
-    fishMesh.name = "" + fish.id;
-
-    return fishMesh;
   }
 
   /**
