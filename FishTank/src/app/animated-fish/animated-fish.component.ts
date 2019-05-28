@@ -123,17 +123,27 @@ export class AnimatedFishComponent implements OnInit {
     //add a light to the scene
     this.scene.add(new THREE.AmbientLight(new THREE.Color(0x000)));
 
-    /**
-     * Create a simple fish mesh.
-     **/
+    //Calculate the color of a fish.
+    var calculateColor = function(fish: Fish): number {
+      var color = 0x0061aa;
+      if (fish.likes > 0) {
+        color = 0xff1394;
+      }
+      return color;
+    }
+
+    //Creates a mesh for a fish
     var createFishMesh = function (fish: Fish, texture: Texture, scene: THREE.Scene, targetList: THREE.Mesh[]) {
-      var fishGeometry = new THREE.SphereGeometry(8, 30, 20);
-
+      //var fishGeometry = new THREE.SphereGeometry(8, 30, 20);
+      var fishGeometry = new THREE.PlaneGeometry(30, 15, 2, 2);
+      var fishColor = calculateColor(fish);
       // Create a wireframe material that's blueish
-      var fishMeshMaterial = new THREE.MeshBasicMaterial({ map: texture, flatShading: true });
+      var fishMeshMaterial = new THREE.MeshBasicMaterial({ map: texture, color: fishColor, transparent: true });
 
-      var fishMesh: THREE.Mesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
 
+      var fishMesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
+
+      fishMesh.rotation.y += Math.PI;
       //give the fish a name (used for routing)
       fishMesh.name = "" + fish.id;
 
@@ -150,8 +160,8 @@ export class AnimatedFishComponent implements OnInit {
       var onLoad = function (texture: THREE.Texture) {
         createFishMesh(fish, texture, scene, targetList);
       }
-      //Create a simple mesh
-      new TextureLoader().load("https://media.discordapp.net/attachments/545539481239814165/577861279591563264/Blue-Penguin-Globe.png", onLoad)
+      //Create a simple fish mesh after the image has been loaded
+      new TextureLoader().load("https://media.discordapp.net/attachments/545539481239814165/582894228720451595/imageedit_5_9453553192.png", onLoad)
 
     });
 
@@ -202,13 +212,5 @@ export class AnimatedFishComponent implements OnInit {
       paras[0].parentNode.removeChild(paras[0]);
     }
     this.router.navigateByUrl("/fishinfo/" + id);
-  }
-
-  private calculateTexture(fish: Fish): THREE.Color {
-    var color = new THREE.Color(0xff1394);
-    if (fish.id > 2) {
-      color.setHex(0x0066a1);
-    }
-    return color;
   }
 }
