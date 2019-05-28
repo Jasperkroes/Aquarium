@@ -71,9 +71,10 @@ export class AnimatedFishComponent implements OnInit {
    * @param fish the Mesh that will swim
    */
   swim(fish: Mesh) {
+    //TODO: make movement dependant on the direction fishes are facing in. (Z-Plane rotation)
     var deltax = 3 * (Math.random() - 0.5);
     var deltay = 3 * (Math.random() - 0.5);
-    var deltaz = 3 * (Math.random() - 0.5);
+    var deltaz = 0.00003 * (Math.random() - 0.5);
 
     var tempPos = fish.position;
     fish.position.addVectors(tempPos, new Vector3(deltax, deltay, deltaz));
@@ -126,7 +127,7 @@ export class AnimatedFishComponent implements OnInit {
     //Calculate the color of a fish.
     var calculateColor = function(fish: Fish): number {
       var color = 0x0061aa;
-      if (fish.likes > 0) {
+      if (fish.likes > 5) {
         color = 0xff1394;
       }
       return color;
@@ -138,11 +139,12 @@ export class AnimatedFishComponent implements OnInit {
       var fishGeometry = new THREE.PlaneGeometry(30, 15, 2, 2);
       var fishColor = calculateColor(fish);
       // Create a wireframe material that's blueish
-      var fishMeshMaterial = new THREE.MeshBasicMaterial({ map: texture, color: fishColor, transparent: true });
+      var fishMeshMaterial = new THREE.MeshBasicMaterial({ map: texture, color: fishColor, transparent: true, side: THREE.DoubleSide });
 
 
       var fishMesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
 
+      //Y-plane rotation is adjusted to be able to see the front of the images
       fishMesh.rotation.y += Math.PI;
       //give the fish a name (used for routing)
       fishMesh.name = "" + fish.id;
