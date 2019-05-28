@@ -26,8 +26,17 @@ public class FishController {
 	@RequestMapping(value = "/fish/{id}", method = RequestMethod.GET)
 	public Fish rateById(@PathVariable int id) {
 		Optional<Fish> optionalFish = fishService.findById(id);
+		return optionalFish.orElseGet(() -> this.mockFish);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/increaseLikes/{id}", method = RequestMethod.GET)
+	public Fish increseLikes(@PathVariable int id){
+		Optional<Fish> optionalFish = fishService.findById(id);
 		if (optionalFish.isPresent()) {
-			return optionalFish.get();
+			Fish fish = optionalFish.get();
+			fish.setLikes(fish.getLikes() + 1);
+			return fishService.save(fish);
 		} else {
 			return this.mockFish;
 		}

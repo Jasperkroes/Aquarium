@@ -28,8 +28,13 @@ export class FishinfoComponent implements OnInit {
   }
 
   increaseLikes() {
-    this.fish.likes += 1;
     this.alreadyLiked = true;
+    //increase the likes of the current fish by one
+    this.fishService.increaseLikes(this.fish.id).subscribe(result => {
+      if (result.likes > 0) {
+        this.fish = result;
+      }
+    });
   }
 
   closeOverlay(event) {
