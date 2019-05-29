@@ -71,36 +71,51 @@ export class AnimatedFishComponent implements OnInit {
    * @param fish the Mesh that will swim
    */
   swim(fish: Mesh) {
-    //TODO: make movement dependant on the direction fishes are facing in. (Z-Plane rotation)
-    var deltax = 3 * (Math.random() - 0.5);
-    var deltay = 3 * (Math.random() - 0.5);
+    var direction = fish.rotation.z + Math.PI;
+    var speed = 2.2222232;
+    var deltax = speed * Math.random() * Math.cos(direction);
+    var deltay = speed * Math.random() * Math.sin(direction);
     var deltaz = 0.00003 * (Math.random() - 0.5);
 
     var tempPos = fish.position;
     fish.position.addVectors(tempPos, new Vector3(deltax, deltay, deltaz));
-    
-    if (this.inbounds(tempPos)) {
+
+    var inbound = this.inbounds(tempPos);
+    if (inbound == 0) {
       fish.position.set(tempPos.x, tempPos.y, tempPos.z);
     } else {
-      fish.position.set(-tempPos.x, -tempPos.y, -tempPos.z);
+
+      fish.rotation.z = -direction + inbound * Math.PI;
+      //get the fish's eye where it belongs
+      //fish.rotateY(Math.PI);
+      //fish.position.set(-tempPos.x, -tempPos.y, -tempPos.z);
+      //fish.rotation.z = fish.rotation.z * Math.cos(-direction + inbound * Math.PI) - fish.rotation.x * Math.sin(-direction + inbound * Math.PI);
+      //fish.rotation.x = fish.rotation.z * Math.sin(-direction + inbound * Math.PI) + fish.rotation.x * Math.cos(-direction + inbound * Math.PI);
     }
+
+    fish.rotation.z -= Math.PI * (Math.random() - 0.5) * 0.008;
+
   }
 
   /**
    * Checks whether vector is somewhere on the screen.
    * 
    * @param vector the vector to be checked
-   * @returns true iff the vector is not on the screen
+   * @returns 0 if inbounds, 1 if out of bounds in y direction, 2 if out of bounds in z direction
    */
-  private inbounds(vector: Vector3): boolean {
+  private inbounds(vector: Vector3): number {
     var copy = new Vector3();
     copy.copy(vector);
     copy.project(this.camera);
 
-    if (copy.y > 1 || copy.y < -1 || copy.x > 1 || copy.x < -1) {
-      return false;
+    //top, bottom
+    if (copy.y > 1 || copy.y < -1) {
+      return 1;
+    // rigth, left
+    } else if (copy.x > 1 || copy.x < -1) {
+      return 2;
     }
-    return true;
+    return 0;
   }
 
   /**
@@ -141,11 +156,10 @@ export class AnimatedFishComponent implements OnInit {
       // Create a wireframe material that's blueish
       var fishMeshMaterial = new THREE.MeshBasicMaterial({ map: texture, color: fishColor, transparent: true, side: THREE.DoubleSide });
 
-
       var fishMesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
 
       //Y-plane rotation is adjusted to be able to see the front of the images
-      fishMesh.rotation.y += Math.PI;
+      //fishMesh.rotation.y += Math.PI;
       //give the fish a name (used for routing)
       fishMesh.name = "" + fish.id;
 
@@ -162,7 +176,7 @@ export class AnimatedFishComponent implements OnInit {
       var onLoad = function (texture: THREE.Texture) {
         createFishMesh(fish, texture, scene, targetList);
       }
-      //Create a simple fish mesh after the image has been loaded
+      //Create a simple fish mesh after the image has been loaded      
       new TextureLoader().load("https://media.discordapp.net/attachments/545539481239814165/582894228720451595/imageedit_5_9453553192.png", onLoad)
 
     });
