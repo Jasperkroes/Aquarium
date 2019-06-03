@@ -35,4 +35,10 @@ export class FishServiceService {
       catchError(this.handleError<Fish>(`increaseLikes`))
     );
   }
+
+  saveFish(fish: Fish): Observable<Fish> {
+    return this.http.post<any>('http://localhost:8080/newFish', fish).pipe(
+      catchError(this.handleError<Fish>(`saveFish`))
+    );
+  }
 }
