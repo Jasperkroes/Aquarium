@@ -144,7 +144,7 @@ export class AnimatedFishComponent implements OnInit {
     this.scene.add(new THREE.AmbientLight(new THREE.Color(0x000)));
 
     //Calculate the color of a fish.
-    var calculateColor = function(fish: Fish): number {
+    var calculateColor = function(fish: Fish): number { 
       var color = 0x0061aa;
       if (fish.likes > 5) {
         color = 0xff1394;
@@ -164,7 +164,7 @@ export class AnimatedFishComponent implements OnInit {
 
       //Y-plane rotation is adjusted to be able to see the front of the images
       if (Math.random() > 0.5) {
-        fishMesh.rotation.y += Math.PI;
+        fishMesh.rotation.z += Math.PI;
       }
       //give the fish a name (used for routing)
       fishMesh.name = "" + fish.id;
