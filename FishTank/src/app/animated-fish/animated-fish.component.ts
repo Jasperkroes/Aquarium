@@ -80,11 +80,11 @@ export class AnimatedFishComponent implements OnInit {
     var tempPos = fish.position;
     fish.position.addVectors(tempPos, new Vector3(deltax, deltay, deltaz));
 
-    var inbound = this.inbounds(tempPos);
+    var inbound = this.inbounds(tempPos, fish);
     if (inbound == 0) {
       fish.position.set(tempPos.x, tempPos.y, tempPos.z);
     } else {
-
+      
       fish.rotation.z = -direction + inbound * Math.PI;
       //get the fish's eye where it belongs
       //fish.rotateY(Math.PI);
@@ -101,21 +101,28 @@ export class AnimatedFishComponent implements OnInit {
    * Checks whether vector is somewhere on the screen.
    * 
    * @param vector the vector to be checked
-   * @returns 0 if inbounds, 1 if out of bounds in y direction, 2 if out of bounds in z direction
+   * @returns 0 if inbounds, 1 if out of bounds at top, 2 if out of bounds at right, 3 if out of bounds at bottom, 4 if out of bound at left
    */
-  private inbounds(vector: Vector3): number {
+  private inbounds(vector: Vector3, fish: Mesh): number {
     var copy = new Vector3();
     copy.copy(vector);
     copy.project(this.camera);
 
-    //top, bottom
-    if (copy.y > 1 || copy.y < -1) {
+    if (copy.y > 1) { //top
+      fish.position.y -= 1;
       return 1;
-    // rigth, left
-    } else if (copy.x > 1 || copy.x < -1) {
+    } else if (copy.x > 1) { //right
+      fish.position.x += 1;
       return 2;
+    } else if (copy.y < -1) {  //bottom
+      fish.position.y += 1;
+      return 3;
+    } else if (copy.x < -1) { //left
+      fish.position.x -= 1;
+      return 4;
     }
-    return 0;
+
+    return 0; //inbounds
   }
 
   /**
