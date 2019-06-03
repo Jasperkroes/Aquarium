@@ -64,6 +64,10 @@ export class AnimatedFishComponent implements OnInit {
    */
   swim(fish: Mesh) {
     var direction = fish.rotation.z + Math.PI;
+    if (fish.rotation.y >= Math.PI) {
+      direction += Math.PI - 2*fish.rotation.z;
+
+    }
     var speed = 0.38222232;
     var dir = Math.random();
     var deltax = speed * dir * Math.cos(direction);
@@ -80,7 +84,7 @@ export class AnimatedFishComponent implements OnInit {
       
       fish.rotation.z = -direction + inbound * Math.PI;
       //get the fish's eye where it belongs
-      //fish.rotateY(Math.PI);
+      //fish.rotateY(Math.PI * inbound);
       //fish.position.set(-tempPos.x, -tempPos.y, -tempPos.z);
       //fish.rotation.z = fish.rotation.z * Math.cos(-direction + inbound * Math.PI) - fish.rotation.x * Math.sin(-direction + inbound * Math.PI);
       //fish.rotation.x = fish.rotation.z * Math.sin(-direction + inbound * Math.PI) + fish.rotation.x * Math.cos(-direction + inbound * Math.PI);
@@ -160,7 +164,7 @@ export class AnimatedFishComponent implements OnInit {
 
       //Y-plane rotation is adjusted to be able to see the front of the images
       if (Math.random() > 0.5) {
-        fishMesh.rotation.z += Math.PI;
+        fishMesh.rotation.y += Math.PI;
       }
       //give the fish a name (used for routing)
       fishMesh.name = "" + fish.id;
