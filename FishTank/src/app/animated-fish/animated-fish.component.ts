@@ -54,15 +54,7 @@ export class AnimatedFishComponent implements OnInit {
    */
   animateScene(mesh: Mesh) {
     const fish = mesh;
-    //const speed: number = 0.3
-    //simple rotation
-    //fish.rotation.x += (Math.PI / 180) * speed;
-    //fish.rotation.y += (Math.PI / 180) * speed;
-    //fish.rotation.z += (Math.PI / 180) * speed;
-
-    if (Math.random() < 0.3) {
-      this.swim(fish);
-    }
+    this.swim(fish);
   }
 
   /**
@@ -72,9 +64,10 @@ export class AnimatedFishComponent implements OnInit {
    */
   swim(fish: Mesh) {
     var direction = fish.rotation.z + Math.PI;
-    var speed = 2.2222232;
-    var deltax = speed * Math.random() * Math.cos(direction);
-    var deltay = speed * Math.random() * Math.sin(direction);
+    var speed = 0.38222232;
+    var dir = Math.random();
+    var deltax = speed * dir * Math.cos(direction);
+    var deltay = speed * dir * Math.sin(direction);
     var deltaz = 0.00003 * (Math.random() - 0.5);
 
     var tempPos = fish.position;
@@ -166,7 +159,9 @@ export class AnimatedFishComponent implements OnInit {
       var fishMesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
 
       //Y-plane rotation is adjusted to be able to see the front of the images
-      //fishMesh.rotation.y += Math.PI;
+      if (Math.random() > 0.5) {
+        fishMesh.rotation.z += Math.PI;
+      }
       //give the fish a name (used for routing)
       fishMesh.name = "" + fish.id;
 
