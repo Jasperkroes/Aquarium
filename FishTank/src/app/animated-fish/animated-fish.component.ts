@@ -20,6 +20,9 @@ export class AnimatedFishComponent implements OnInit {
 
   @Input() fishes: Fish[];
 
+  fishClicked: boolean = false;
+  clickedFishId: number = -1;
+
   constructor(private router: Router) {
   }
 
@@ -233,6 +236,9 @@ export class AnimatedFishComponent implements OnInit {
     while (paras[0]) {
       paras[0].parentNode.removeChild(paras[0]);
     }
-    this.router.navigateByUrl("/fishinfo/" + id);
+
+    this.clickedFishId = Number.parseInt(id);
+    //this.fishClicked = true;
+    //this.router.navigateByUrl("/fishinfo/" + id);
   }
 }
