@@ -22,6 +22,7 @@ export class AnimatedFishComponent implements OnInit {
 
   fishClicked: boolean = false;
   clickedFishId: number = -1;
+  requestAnimationId: number = 0;
 
   constructor(private router: Router) {
   }
@@ -41,7 +42,7 @@ export class AnimatedFishComponent implements OnInit {
    * Render the scene every frame.
    */
   render() {
-    requestAnimationFrame(() => this.render());
+    this.requestAnimationId = requestAnimationFrame(() => this.render());
     this.renderer.render(this.scene, this.camera);
 
     //animate the fish
@@ -231,13 +232,14 @@ export class AnimatedFishComponent implements OnInit {
    * @param id a string of the id of the fish. 
    */
   private showFishInfoPage(id: string) {
-    var paras = document.getElementsByClassName("animatedFish");
+  //  var paras = document.getElementsByClassName("animatedFish");
 
-    while (paras[0]) {
-      paras[0].parentNode.removeChild(paras[0]);
-    }
+    //while (paras[0]) {
+      //paras[0].parentNode.removeChild(paras[0]);
+    //}
 
     this.clickedFishId = Number.parseInt(id);
+    cancelAnimationFrame(this.requestAnimationId);
     //this.fishClicked = true;
     //this.router.navigateByUrl("/fishinfo/" + id);
   }
