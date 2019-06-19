@@ -12,6 +12,8 @@ export class FishComponent implements OnInit {
 
   public fishes: Fish[];
 
+  clickedFishId: number = -1;
+
   constructor(private router: Router, private fishService: FishServiceService) { }
 
   ngOnInit() {

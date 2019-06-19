@@ -43,6 +43,6 @@ export class FishinfoComponent implements OnInit {
   closeOverlay(event) {
     console.log("Closing the overlay")
     this.fishid = -1;
-    this.fishidChange.emit(-1);
+    this.fishidChange.emit(this.fishid);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as THREE from 'three';
 import { Fish } from '../Fish';
 import { Router } from '@angular/router';
@@ -19,10 +19,8 @@ export class AnimatedFishComponent implements OnInit {
   targetList: THREE.Mesh[] = [];
 
   @Input() fishes: Fish[];
-
-  fishClicked: boolean = false;
-  clickedFishId: number = -1;
-  requestAnimationId: number = 0;
+  @Input() fishid: number;
+  @Output() fishidChange = new EventEmitter<number>();
 
   constructor(private router: Router) {
   }
@@ -42,13 +40,17 @@ export class AnimatedFishComponent implements OnInit {
    * Render the scene every frame.
    */
   render() {
-    this.requestAnimationId = requestAnimationFrame(() => this.render());
+    requestAnimationFrame(() => this.render());
     this.renderer.render(this.scene, this.camera);
 
-    //animate the fish
-    this.scene.children.forEach((obj: Mesh) => {
-      this.animateScene(obj);
-    })
+    //don't animte whenever the fishes are not visible
+    //this happens when a fish is clicked on, thus when this.fishid > 0
+    if(this.fishid < 0) {
+      //animate the fish
+      this.scene.children.forEach((obj: Mesh) => {
+        this.animateScene(obj);
+      })
+    }
 
   }
 
@@ -237,9 +239,13 @@ export class AnimatedFishComponent implements OnInit {
     //while (paras[0]) {
       //paras[0].parentNode.removeChild(paras[0]);
     //}
+    console.log("Pausing swimming.");
+    this.fishid = Number.parseInt(id);
+    this.fishidChange.emit(this.fishid);
 
-    this.clickedFishId = Number.parseInt(id);
-    cancelAnimationFrame(this.requestAnimationId);
+    //cancelAnimationFrame(this.requestAnimationId);
+
+    //this.render();
     //this.fishClicked = true;
     //this.router.navigateByUrl("/fishinfo/" + id);
   }
