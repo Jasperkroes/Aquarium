@@ -1,5 +1,13 @@
-<div id="tank" class="center-screen">
+
+<div id="tank" class="center-screen" [hidden]="clickedFishId>=0">
+  <!-- Swimming fishes -->>
   <div *ngIf="fishes">
-    <app-animated-fish [fishes]="fishes"></app-animated-fish>
+    <app-animated-fish [fishes]="fishes" [(fishid)]="clickedFishId"></app-animated-fish>
   </div>
+
+</div>
+
+<!-- information about the clicked on fish-->
+<div [hidden]="clickedFishId<0">
+  <app-fishinfo *ngIf="clickedFishId>=0" [(fishid)]="clickedFishId"></app-fishinfo>
 </div>

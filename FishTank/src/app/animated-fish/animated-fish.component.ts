@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as THREE from 'three';
 import { Fish } from '../Fish';
 import { Router } from '@angular/router';
@@ -19,6 +19,8 @@ export class AnimatedFishComponent implements OnInit {
   targetList: THREE.Mesh[] = [];
 
   @Input() fishes: Fish[];
+  @Input() fishid: number;
+  @Output() fishidChange = new EventEmitter<number>();
 
   constructor(private router: Router) {
   }
@@ -41,10 +43,14 @@ export class AnimatedFishComponent implements OnInit {
     requestAnimationFrame(() => this.render());
     this.renderer.render(this.scene, this.camera);
 
-    //animate the fish
-    this.scene.children.forEach((obj: Mesh) => {
-      this.animateScene(obj);
-    })
+    //don't animte whenever the fishes are not visible
+    //this happens when a fish is clicked on, thus when this.fishid > 0
+    if(this.fishid < 0) {
+      //animate the fish
+      this.scene.children.forEach((obj: Mesh) => {
+        this.animateScene(obj);
+      })
+    }
 
   }
 
@@ -54,15 +60,7 @@ export class AnimatedFishComponent implements OnInit {
    */
   animateScene(mesh: Mesh) {
     const fish = mesh;
-    //const speed: number = 0.3
-    //simple rotation
-    //fish.rotation.x += (Math.PI / 180) * speed;
-    //fish.rotation.y += (Math.PI / 180) * speed;
-    //fish.rotation.z += (Math.PI / 180) * speed;
-
-    if (Math.random() < 0.3) {
-      this.swim(fish);
-    }
+    this.swim(fish);
   }
 
   /**
@@ -71,35 +69,63 @@ export class AnimatedFishComponent implements OnInit {
    * @param fish the Mesh that will swim
    */
   swim(fish: Mesh) {
-    var deltax = 3 * (Math.random() - 0.5);
-    var deltay = 3 * (Math.random() - 0.5);
-    var deltaz = 3 * (Math.random() - 0.5);
+    var direction = fish.rotation.z + Math.PI;
+    if (fish.rotation.y >= Math.PI) {
+      direction += Math.PI - 2*fish.rotation.z;
+
+    }
+    var speed = 0.38222232;
+    var dir = Math.random();
+    var deltax = speed * dir * Math.cos(direction);
+    var deltay = speed * dir * Math.sin(direction);
+    var deltaz = 0.00003 * (Math.random() - 0.5);
 
     var tempPos = fish.position;
     fish.position.addVectors(tempPos, new Vector3(deltax, deltay, deltaz));
-    
-    if (this.inbounds(tempPos)) {
+
+    var inbound = this.inbounds(tempPos, fish);
+    if (inbound == 0) {
       fish.position.set(tempPos.x, tempPos.y, tempPos.z);
     } else {
-      fish.position.set(-tempPos.x, -tempPos.y, -tempPos.z);
+      
+      fish.rotation.z = -direction + inbound * Math.PI;
+      //get the fish's eye where it belongs
+      //fish.rotateY(Math.PI * inbound);
+      //fish.position.set(-tempPos.x, -tempPos.y, -tempPos.z);
+      //fish.rotation.z = fish.rotation.z * Math.cos(-direction + inbound * Math.PI) - fish.rotation.x * Math.sin(-direction + inbound * Math.PI);
+      //fish.rotation.x = fish.rotation.z * Math.sin(-direction + inbound * Math.PI) + fish.rotation.x * Math.cos(-direction + inbound * Math.PI);
     }
+
+    fish.rotation.z -= Math.PI * (Math.random() - 0.5) * 0.008;
+
   }
 
   /**
    * Checks whether vector is somewhere on the screen.
    * 
    * @param vector the vector to be checked
-   * @returns true iff the vector is not on the screen
+   * @returns 0 if inbounds, 1 if out of bounds at top, 2 if out of bounds at right, 3 if out of bounds at bottom, 4 if out of bound at left
    */
-  private inbounds(vector: Vector3): boolean {
+  private inbounds(vector: Vector3, fish: Mesh): number {
     var copy = new Vector3();
     copy.copy(vector);
     copy.project(this.camera);
 
-    if (copy.y > 1 || copy.y < -1 || copy.x > 1 || copy.x < -1) {
-      return false;
+    if (copy.y > 1) { //top
+      fish.position.y -= 1;
+      return 1;
+    } else if (copy.x > 1) { //right
+      fish.position.x += 1;
+      return 2;
+    } else if (copy.y < -1) {  //bottom
+      fish.position.y += 1;
+      return 3;
+    } else if (copy.x < -1) { //left
+      fish.position.x -= 1;
+      return 4;
     }
-    return true;
+
+    return 0; //inbounds
   }
 
   /**
@@ -123,17 +149,29 @@ export class AnimatedFishComponent implements OnInit {
     //add a light to the scene
     this.scene.add(new THREE.AmbientLight(new THREE.Color(0x000)));
 
-    /**
-     * Create a simple fish mesh.
-     **/
+    //Calculate the color of a fish.
+    var calculateColor = function(fish: Fish): number { 
+      var color = 0x0061aa;
+      if (fish.likes > 5) {
+        color = 0xff1394;
+      }
+      return color;
+    }
+
+    //Creates a mesh for a fish
     var createFishMesh = function (fish: Fish, texture: Texture, scene: THREE.Scene, targetList: THREE.Mesh[]) {
-      var fishGeometry = new THREE.SphereGeometry(8, 30, 20);
-
+      //var fishGeometry = new THREE.SphereGeometry(8, 30, 20);
+      var fishGeometry = new THREE.PlaneGeometry(30, 15, 2, 2);
+      var fishColor = calculateColor(fish);
       // Create a wireframe material that's blueish
-      var fishMeshMaterial = new THREE.MeshBasicMaterial({ map: texture, flatShading: true });
+      var fishMeshMaterial = new THREE.MeshBasicMaterial({ map: texture, color: fishColor, transparent: true, side: THREE.DoubleSide });
 
-      var fishMesh: THREE.Mesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
+      var fishMesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
 
+      //Y-plane rotation is adjusted to be able to see the front of the images
+      if (Math.random() > 0.5) {
+        fishMesh.rotation.z += Math.PI;
+      }
       //give the fish a name (used for routing)
       fishMesh.name = "" + fish.id;
 
@@ -150,8 +188,8 @@ export class AnimatedFishComponent implements OnInit {
       var onLoad = function (texture: THREE.Texture) {
         createFishMesh(fish, texture, scene, targetList);
       }
-      //Create a simple mesh
-      new TextureLoader().load("https://media.discordapp.net/attachments/545539481239814165/577861279591563264/Blue-Penguin-Globe.png", onLoad)
+      //Create a simple fish mesh after the image has been loaded      
+      new TextureLoader().load("https://media.discordapp.net/attachments/545539481239814165/582894228720451595/imageedit_5_9453553192.png", onLoad)
 
     });
 
@@ -196,19 +234,19 @@ export class AnimatedFishComponent implements OnInit {
    * @param id a string of the id of the fish. 
    */
   private showFishInfoPage(id: string) {
-    var paras = document.getElementsByClassName("animatedFish");
+  //  var paras = document.getElementsByClassName("animatedFish");
 
-    while (paras[0]) {
-      paras[0].parentNode.removeChild(paras[0]);
-    }
-    this.router.navigateByUrl("/fishinfo/" + id);
-  }
+    //while (paras[0]) {
+      //paras[0].parentNode.removeChild(paras[0]);
+    //}
+    console.log("Pausing swimming.");
+    this.fishid = Number.parseInt(id);
+    this.fishidChange.emit(this.fishid);
 
-  private calculateTexture(fish: Fish): THREE.Color {
-    var color = new THREE.Color(0xff1394);
-    if (fish.id > 2) {
-      color.setHex(0x0066a1);
-    }
-    return color;
+    //cancelAnimationFrame(this.requestAnimationId);
+
+    //this.render();
+    //this.fishClicked = true;
+    //this.router.navigateByUrl("/fishinfo/" + id);
   }
 }

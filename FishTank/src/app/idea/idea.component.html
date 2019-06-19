@@ -1,0 +1,45 @@
+<div class="container">
+  <button class="btn btn-lg btn-primary btn-block" type="submit" routerLink="">Go back</button>
+  <div [hidden]="submitted">
+    <h1>New Idea</h1>
+    <form (ngSubmit)="verifyNewIdea(model)" #ideaForm="ngForm">
+
+      <div class="form-group">
+        <label for="title">Naam</label>
+        <input type="text" class="form-control" id="title"
+               required
+               [(ngModel)]="model.sound" name="title"
+               #title="ngModel" placeholder="title (max 50 characters)" maxlength="50">
+        <div [hidden]="title.valid || title.pristine"
+             class="alert alert-danger">
+          Please enter a valid title.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="summary">Summary</label>
+        <input type="text" class="form-control" id="summary" required
+               [(ngModel)]="model.summary" name="summary" #summary="ngModel" placeholder="summary (max 250 characters)" maxlength="200">
+        <div [hidden]="summary.valid || summary.pristine"
+             class="alert alert-danger">
+          Please provide a brief summary of your idea.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="ideaLink">Url to your full idea</label>
+        <input type="url" class="form-control" id="ideaLink" required
+                [(ngModel)]="model.ideaLink" name="ideaLink" #ideaLink="ngModel" placeholder="https://example.com" maxlength="200">
+        <div [hidden]="ideaLink.valid || ideaLink.pristine"
+              class="alert alert-danger">
+          Please provide a valid url
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-success" [disabled]="ideaForm.invalid" (click)="saveIdea(model)">Submit</button>
+
+    </form>
+  </div>
+
+ 
+</div>
