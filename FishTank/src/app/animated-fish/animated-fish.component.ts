@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as THREE from 'three';
 import { Fish } from '../Fish';
-import { Router } from '@angular/router';
-import { Mesh, Raycaster, Vector3, Texture, Scene } from 'three';
+import { Mesh, Raycaster, Vector3, Texture } from 'three';
 import { TextureLoader } from 'three';
 
 
@@ -22,8 +21,7 @@ export class AnimatedFishComponent implements OnInit {
   @Input() fishid: number;
   @Output() fishidChange = new EventEmitter<number>();
 
-  constructor(private router: Router) {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.initScene();
@@ -69,11 +67,10 @@ export class AnimatedFishComponent implements OnInit {
    * @param fish the Mesh that will swim
    */
   swim(fish: Mesh) {
+    //makes the fish swim forwards instead of backwards
     var direction = fish.rotation.z + Math.PI;
-    if (fish.rotation.y >= Math.PI) {
-      direction += Math.PI - 2*fish.rotation.z;
 
-    }
+    //calculate the next position of the fish
     var speed = 0.38222232;
     var dir = Math.random();
     var deltax = speed * dir * Math.cos(direction);
@@ -83,21 +80,19 @@ export class AnimatedFishComponent implements OnInit {
     var tempPos = fish.position;
     fish.position.addVectors(tempPos, new Vector3(deltax, deltay, deltaz));
 
+    //check if this fish is still in the tank
     var inbound = this.inbounds(tempPos, fish);
+
     if (inbound == 0) {
+      //move forward
       fish.position.set(tempPos.x, tempPos.y, tempPos.z);
     } else {
-      
+      //turn around based on where this fish went out of bounds (top, bottom, left or right)
       fish.rotation.z = -direction + inbound * Math.PI;
-      //get the fish's eye where it belongs
-      //fish.rotateY(Math.PI * inbound);
-      //fish.position.set(-tempPos.x, -tempPos.y, -tempPos.z);
-      //fish.rotation.z = fish.rotation.z * Math.cos(-direction + inbound * Math.PI) - fish.rotation.x * Math.sin(-direction + inbound * Math.PI);
-      //fish.rotation.x = fish.rotation.z * Math.sin(-direction + inbound * Math.PI) + fish.rotation.x * Math.cos(-direction + inbound * Math.PI);
     }
 
-    fish.rotation.z -= Math.PI * (Math.random() - 0.5) * 0.008;
-
+    //small variance in the fish's direction
+    fish.rotation.z -= Math.PI * (Math.random() - 0.5) * 0.0008;
   }
 
   /**
@@ -111,6 +106,7 @@ export class AnimatedFishComponent implements OnInit {
     copy.copy(vector);
     copy.project(this.camera);
 
+    //move the fish inbounds when they leave the tank
     if (copy.y > 1) { //top
       fish.position.y -= 1;
       return 1;
@@ -160,10 +156,9 @@ export class AnimatedFishComponent implements OnInit {
 
     //Creates a mesh for a fish
     var createFishMesh = function (fish: Fish, texture: Texture, scene: THREE.Scene, targetList: THREE.Mesh[]) {
-      //var fishGeometry = new THREE.SphereGeometry(8, 30, 20);
       var fishGeometry = new THREE.PlaneGeometry(30, 15, 2, 2);
+
       var fishColor = calculateColor(fish);
-      // Create a wireframe material that's blueish
       var fishMeshMaterial = new THREE.MeshBasicMaterial({ map: texture, color: fishColor, transparent: true, side: THREE.DoubleSide });
 
       var fishMesh = new THREE.Mesh(fishGeometry, fishMeshMaterial);
@@ -234,19 +229,10 @@ export class AnimatedFishComponent implements OnInit {
    * @param id a string of the id of the fish. 
    */
   private showFishInfoPage(id: string) {
-  //  var paras = document.getElementsByClassName("animatedFish");
-
-    //while (paras[0]) {
-      //paras[0].parentNode.removeChild(paras[0]);
-    //}
     console.log("Pausing swimming.");
+
+    //notify parent that a fish with id was clicked on.
     this.fishid = Number.parseInt(id);
     this.fishidChange.emit(this.fishid);
-
-    //cancelAnimationFrame(this.requestAnimationId);
-
-    //this.render();
-    //this.fishClicked = true;
-    //this.router.navigateByUrl("/fishinfo/" + id);
   }
 }

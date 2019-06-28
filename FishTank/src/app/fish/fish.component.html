@@ -1,6 +1,6 @@
 
 <div id="tank" class="center-screen" [hidden]="clickedFishId>=0">
-  <!-- Swimming fishes -->>
+  <!-- Swimming fishes -->
   <div *ngIf="fishes">
     <app-animated-fish [fishes]="fishes" [(fishid)]="clickedFishId"></app-animated-fish>
   </div>
