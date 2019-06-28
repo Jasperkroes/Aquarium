@@ -20,6 +20,9 @@ export class FishComponent implements OnInit {
     this.getAllFishes();
   }
 
+  /**
+   * Get all the fishes from the database and save them in this.fishes.
+   */
   private getAllFishes() {
     this.fishService.getAllFishes().subscribe(
       result => {
@@ -28,18 +31,13 @@ export class FishComponent implements OnInit {
     );
   }
 
+  /**
+   * Show the information of the fish with id.
+   * 
+   * @param id the id of the fish, whose information will be shown
+   */
   showFishPage(id: number) {
     this.router.navigateByUrl("/fishinfo/"+id);
-  }
-
-  public getImage(id: number): string {
-    if (id % 3 == 0) {
-      return "http://greaterclevelandaquarium.com/wp-content/uploads/2018/07/Sailfin-Tang_outline-1.png";
-    } else if (id % 3 == 1) {
-      return "https://i.pinimg.com/originals/9a/1a/16/9a1a1601fd0852fc6ea1881f24621a92.png";
-    } else {
-      return "https://pics.clipartpng.com/Clown_fish_PNG_Clipart-430.png";
-    }
   }
 
 }

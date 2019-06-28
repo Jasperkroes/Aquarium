@@ -16,10 +16,18 @@ export class IdeaComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * Save the new fish in the database.
+   */
   saveIdea() {
     this.fishService.saveFish(this.model).subscribe();
   }
 
+  /**
+   * Varifies if the new idea is valid, and actually a new idea.
+   * 
+   * @param fish The fish that gets verified
+   */
   verifyNewIdea(fish: Fish) {
     this.model.ideaLink;
   }
